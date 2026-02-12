@@ -1,0 +1,30 @@
+manifest:
+  version: 1.2
+
+  remotes:
+    - name: zephyrproject
+      url-base: https://github.com/zephyrproject-rtos
+    - name: github
+      url-base: https://github.com
+
+  self:
+    path: openawg
+
+  projects:
+    - name: zephyr
+      remote: zephyrproject
+      repo-path: zephyr
+      revision: v4.3.0
+      import:
+        path-prefix: deps
+        file: west.yml
+        name-allowlist:
+          - cmsis
+          - cmsis_6
+          - hal_espressif
+
+    - name: scpi-parser
+      remote: github
+      repo-path: j123b567/scpi-parser
+      revision: master
+      path: modules/lib/scpi-parser
