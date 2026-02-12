@@ -65,18 +65,101 @@ void get_serial(char *dst, size_t len)
     }
 }
 
-// ========== SCPI Library Initialization ==========
+// ========== SCPI Library Command Callbacks ==========
+
+static scpi_result_t My_CoreTstQ(scpi_t *context)
+{
+
+    SCPI_ResultInt32(context, 0);
+
+    return SCPI_RES_OK;
+}
 
 // SCPI Command Table
-scpi_command_t scpi_commands[] = {{
-                                      .pattern = "*IDN?",
-                                      .callback = SCPI_CoreIdnQ,
-                                  },
-                                  {
-                                      .pattern = "*RST",
-                                      .callback = SCPI_CoreRst,
-                                  },
-                                  SCPI_CMD_LIST_END};
+scpi_command_t scpi_commands[] = {
+    // IEEE 488.2 Common Commands
+    {
+        .pattern = "*CLS",
+        .callback = SCPI_CoreCls,
+    },
+    {
+        .pattern = "*ESE",
+        .callback = SCPI_CoreEse,
+    },
+    {
+        .pattern = "*ESE?",
+        .callback = SCPI_CoreEseQ,
+    },
+    {
+        .pattern = "*ESR?",
+        .callback = SCPI_CoreEsrQ,
+    },
+    {
+        .pattern = "*IDN?",
+        .callback = SCPI_CoreIdnQ,
+    },
+    {
+        .pattern = "*OPC",
+        .callback = SCPI_CoreOpc,
+    },
+    {
+        .pattern = "*OPC?",
+        .callback = SCPI_CoreOpcQ,
+    },
+    {
+        .pattern = "*RST",
+        .callback = SCPI_CoreRst,
+    },
+    {
+        .pattern = "*SRE",
+        .callback = SCPI_CoreSre,
+    },
+    {
+        .pattern = "*SRE?",
+        .callback = SCPI_CoreSreQ,
+    },
+    {
+        .pattern = "*STB?",
+        .callback = SCPI_CoreStbQ,
+    },
+    {
+        .pattern = "*TST?",
+        .callback = My_CoreTstQ,
+    },
+    {
+        .pattern = "*WAI",
+        .callback = SCPI_CoreWai,
+    },
+    // Required SCPI Commands
+    {
+        .pattern = "SYSTem:ERRor[:NEXT]?",
+        .callback = SCPI_SystemErrorNextQ,
+    },
+    {
+        .pattern = "SYSTem:ERRor:COUNt?",
+        .callback = SCPI_SystemErrorCountQ,
+    },
+    {
+        .pattern = "SYSTem:VERSion?",
+        .callback = SCPI_SystemVersionQ,
+    },
+    {
+        .pattern = "STATus:QUEStionable[:EVENt]?",
+        .callback = SCPI_StatusQuestionableEventQ,
+    },
+    {
+        .pattern = "STATus:QUEStionable:ENABle",
+        .callback = SCPI_StatusQuestionableEnable,
+    },
+    {
+        .pattern = "STATus:QUEStionable:ENABle?",
+        .callback = SCPI_StatusQuestionableEnableQ,
+    },
+    {
+        .pattern = "STATus:PRESet",
+        .callback = SCPI_StatusPreset,
+    },
+    SCPI_CMD_LIST_END};
 
 /**
  * @brief SCPI Parser Interface callback that outputs library data to stdout
