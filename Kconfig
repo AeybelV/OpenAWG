@@ -1,0 +1,20 @@
+mainmenu "OpenAWG"
+
+source "Kconfig.zephyr"
+
+menu "OpenAWG Configuration"
+
+config AWG_MANAFACTURER
+    string "Manufacturer string"
+    default "OpenAWG"
+    help
+      Manufacturer name returned by SCPI *IDN?
+
+config AWG_MODEL
+    string "Model Number"
+    default "OpenAWG Project"
+    help
+      Product name returned by SCPI *IDN?
+
+endmenu
+
